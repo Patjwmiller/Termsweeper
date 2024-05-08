@@ -1,9 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <sstream>
-#include <cstring> // Added for strcmp
+#include "termsweeper.hpp"
+
 
 // Platform-specific includes
 #ifdef _WIN32
@@ -14,56 +10,11 @@
 
 using namespace std;
 
-enum Cell { Empty, Bomb };
-enum State { Closed, Open, Flagged };
-
-class Minefield {
-public:
-    Minefield(int rows, int cols, int bombPercentage) : Rows(rows), Cols(cols), BombPercentage(bombPercentage), Generated(false), CurrentRow(0), CurrentCol(0) {
-        grid = vector<vector<Cell>>(rows, vector<Cell>(cols, Empty));
-        cellStates = vector<vector<State>>(rows, vector<State>(cols, Closed));
-    }
-
-    bool CheckForVictory() const;
-    void ToggleFlagAtCursor();
-    void GetRandomEmptyCell(int &row, int &col) const;
-    bool IsAdjacentToCursor(int row, int col) const;
-    void RandomizeMinefield();
-    bool IsInsideMinefield(int row, int col) const;
-    int CountNeighborBombs(int row, int col) const;
-    int CountNeighborFlags(int row, int col) const;
-    bool OpenCellAtCursor();
-    bool OpenCellAt(int row, int col);
-    void FlagAllBombs();
-    void OpenAllBombs();
-    void Reset(int rows, int cols, int bombPercentage);
-    bool IsAtCursor(int row, int col) const;
-    string GetDisplayString() const;
-    void MoveUp();
-    void MoveDown();
-    void MoveLeft();
-    void MoveRight();
-    void Redisplay() const;
-
-    int GetCurrentRow() const { return CurrentRow; }
-    int GetCurrentCol() const { return CurrentCol; }
-
-private:
-    bool Generated;
-    vector<vector<Cell>> grid;
-    vector<vector<State>> cellStates;
-    int Rows;
-    int Cols;
-    int BombPercentage;
-    int CurrentRow;
-    int CurrentCol;
-};
-
-bool PromptYesNo(string question, int keep);
-int PromptGridSize(string prompt);
-int PromptBombPercentage(string prompt);
-
-void PrintHelp();
+Minefield::Minefield(int rows, int cols, int bombPercentage)
+    : Rows(rows), Cols(cols), BombPercentage(bombPercentage), Generated(false), CurrentRow(0), CurrentCol(0) {
+    grid = std::vector<std::vector<Cell>>(rows, std::vector<Cell>(cols, Empty));
+    cellStates = std::vector<std::vector<State>>(rows, std::vector<State>(cols, Closed));
+}
 
 int main(int argc, char* argv[]) {
     srand(time(nullptr));
